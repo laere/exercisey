@@ -24,21 +24,24 @@ export default (state = initialState, action) => {
     case FETCH_WORKOUTS: {
       return {
         ...state,
-        workoutList: action.payload
+        workoutList: action.payload,
+        loading: false
       };
     }
 
     case FETCH_WORKOUT: {
       return {
         ...state,
-        workout: action.payload
+        workout: action.payload,
+        loading: false
       };
     }
 
     case DELETE_WORKOUT: {
       return {
         ...state,
-        workoutList: state.workoutList.filter(w => w._id !== action.payload)
+        workoutList: state.workoutList.filter(w => w._id !== action.payload),
+        loading: false
       };
     }
     default:

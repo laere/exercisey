@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchWorkouts } from "actions/workoutActions";
 import WorkoutItem from "components/workouts/WorkoutItem";
+import Spinner from "components/common/Spinner";
 
 class WorkoutList extends React.Component {
   componentDidMount() {
@@ -9,9 +10,11 @@ class WorkoutList extends React.Component {
   }
 
   renderList() {
-    const { workoutList } = this.props;
+    const { workoutList, loading } = this.props.workouts;
 
-    if (!workoutList) return;
+    if (!workoutList || loading) {
+      return <Spinner />;
+    }
 
     return workoutList.map(workout => {
       return <WorkoutItem key={workout._id} workout={workout} />;
@@ -30,7 +33,7 @@ class WorkoutList extends React.Component {
 }
 
 const mapStateToProps = ({ workouts }) => {
-  return { workoutList: workouts.workoutList };
+  return { workouts };
 };
 
 export default connect(

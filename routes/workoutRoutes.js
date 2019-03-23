@@ -61,10 +61,6 @@ router.post(
       .catch(validationError =>
         res.send(validationError.details.map(d => d.message))
       );
-
-    // Workout.create(workoutProps)
-    //   .then(workout => res.json(workout))
-    //   .catch(next);
   }
 );
 
@@ -75,7 +71,7 @@ router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    Workout.deleteOne({ _id: req.params.id })
+    Workout.findOneAndRemove({ _id: req.params.id })
       .then(() => Workout.find({ user: req.user.id }))
       .then(workouts => res.json(workouts))
       .catch(next);

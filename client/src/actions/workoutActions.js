@@ -3,9 +3,16 @@ import {
   DELETE_WORKOUT,
   EDIT_WORKOUT,
   GET_ERRORS,
-  FETCH_WORKOUTS
+  FETCH_WORKOUTS,
+  IS_LOADING
 } from "actions/types";
 import axios from "axios";
+
+export const isLoading = () => {
+  return {
+    type: IS_LOADING
+  };
+};
 
 export const createWorkout = (formValues, history) => dispatch => {
   axios
@@ -17,6 +24,7 @@ export const createWorkout = (formValues, history) => dispatch => {
 };
 
 export const fetchWorkouts = () => dispatch => {
+  dispatch(isLoading());
   axios
     .get("/api/workouts")
     .then(res => dispatch({ type: FETCH_WORKOUTS, payload: res.data }))

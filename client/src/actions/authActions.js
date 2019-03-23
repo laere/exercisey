@@ -23,6 +23,7 @@ export const loginUser = formValues => dispatch => {
   axios
     .post("/api/users/login", formValues)
     .then(res => {
+      console.log("Login AC", res);
       // Save to localstorage
       const { token } = res.data;
       // Set token to localstorage

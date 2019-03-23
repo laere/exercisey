@@ -7,6 +7,7 @@ import Register from "components/Register";
 import Login from "components/Login";
 import WorkoutList from "components/workouts/WorkoutList";
 import WorkoutNew from "components/workouts/WorkoutNew";
+import ExerciseNew from "components/exercises/ExerciseNew";
 
 class App extends React.Component {
   render() {
@@ -14,16 +15,21 @@ class App extends React.Component {
       <Router>
         <div className="container">
           <Header />
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-          </Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
           <Switch>
             <PrivateRoute exact path="/workouts" component={WorkoutList} />
           </Switch>
           <Switch>
             <PrivateRoute exact path="/workouts/new" component={WorkoutNew} />
+          </Switch>
+          <Switch>
+            <PrivateRoute
+              exact
+              path="/workouts/exercises/new"
+              component={ExerciseNew}
+            />
           </Switch>
         </div>
       </Router>
