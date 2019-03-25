@@ -1,6 +1,7 @@
 import {
   FETCH_WORKOUTS,
   FETCH_WORKOUT,
+  FETCH_EXERCISE,
   DELETE_WORKOUT,
   ADD_WORKOUT,
   GET_ERRORS,
@@ -10,6 +11,7 @@ import {
 const initialState = {
   workoutList: [],
   workout: {},
+  exercise: {},
   loading: false
 };
 
@@ -42,6 +44,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         workout: action.payload,
+        loading: false
+      };
+    }
+
+    case FETCH_EXERCISE: {
+      return {
+        ...state,
+        exercise: action.payload,
         loading: false
       };
     }

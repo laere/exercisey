@@ -8,6 +8,19 @@ const Workout = require("../models/Workout");
 const ExerciseSchema = require("../models/Exercise");
 const exerciseValidationSchema = require("../validation/exerciseValidation");
 
+router.get(
+  "/:id/:exerciseId",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Workout.findOne({ _id: req.params.id })
+      .then(workout => {
+        const exercise = workout.exercises.id(req.params.exerciseId);
+        res.send(exercise);
+      })
+      .catch(next);
+  }
+);
+
 // @route   POST api/workout/:id
 // @desc    Add a single workout
 // @access  Private
@@ -15,10 +28,9 @@ router.post(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    console.log(req.body);
     Workout.findOne({ _id: req.params.id }).then(workout => {
       const exerciseProps = req.body;
-      console.log(exerciseProps);
+
       Joi.validate(exerciseProps, exerciseValidationSchema);
 
       workout.exercises.push(exerciseProps);

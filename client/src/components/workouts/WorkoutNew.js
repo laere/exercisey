@@ -1,66 +1,67 @@
 import React from "react";
-import InputField from "components/inputs/InputField";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { createWorkout } from "actions/workoutActions";
 
 class WorkoutNew extends React.Component {
-  state = { name: "", errors: null };
-
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.errors) {
-      return { errors: nextProps.errors };
-    }
-
-    return null;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.errors !== this.props.errors) {
-      this.setState({ errors: this.props.errors });
-    }
-  }
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-    const workoutProps = { ...this.state };
-    this.props.createWorkout(workoutProps, this.props.history);
-  };
-
   render() {
-    const { errors } = this.props;
-    console.log("Errors", this.state.errors);
+    const { workout } = this.props.workouts;
     return (
       <div>
         <h1 className="title is-3">Create a workout</h1>
-        <form onSubmit={this.onSubmit}>
-          <InputField
-            label="Name"
-            name="name"
-            type="text"
-            value={this.state.name}
-            onChange={this.onChange}
-            errors={errors}
-          />
-          <button
-            type="submit"
-            className="button is-primary is-large"
-            style={{ marginTop: "20px" }}
-          >
-            Submit
-          </button>
-        </form>
+        <Formik
+          initialValues={{ name: "" }}
+          validate={values => {
+            let errors = {};
+            if (!values.name) {
+              errors.name = "Name is required";
+            } else if (values.name.length < 2) {
+              errors.name = "Name must be more than 2 characters long!";
+            }
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            const workoutProps = { ...values };
+            setSubmitting(false);
+            this.props.createWorkout(workoutProps, this.props.history);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <label className="label">Name:</label>
+              <Field
+                type="text"
+                name="name"
+                value={workout.name}
+                className="input"
+              />
+              <ErrorMessage
+                className="help is-danger"
+                name="name"
+                component="div"
+                style={{ fontSize: "24px" }}
+              />
+
+              <button
+                type="submit"
+                className="button is-primary is-large"
+                style={{ marginTop: "20px" }}
+                disabled={isSubmitting}
+                onSubmit={this.onSubmit}
+              >
+                Submit
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ errors }) => {
-  return { errors };
+const mapStateToProps = ({ workouts }) => {
+  return { workouts };
 };
 
 export default connect(

@@ -13,9 +13,7 @@ const InputField = props => {
       <div
         className="invalid-feedback"
         style={{ color: "red", fontWeight: "bold" }}
-      >
-        {props.errors[0]}
-      </div>
+      />
     </div>
   );
 };

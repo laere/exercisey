@@ -1,82 +1,71 @@
-import _ from "lodash";
 import React from "react";
-import InputField from "components/inputs/InputField";
-import { withRouter, Link } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { editExercise } from "actions/exerciseActions";
+import { editExercise, fetchExercise } from "actions/exerciseActions";
 
-class ExerciseEdit extends React.Component {
-  state = { name: "", errors: {} };
-
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.errors) {
-      return { errors: nextProps.errors };
-    }
-
-    return null;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.errors !== this.props.errors) {
-      this.setState({ errors: this.props.errors });
-    }
-  }
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { history } = this.props;
+class ExerciseNew extends React.Component {
+  componentDidMount() {
     const { id, exerciseId } = this.props.match.params;
-    const exerciseProps = { ...this.state };
-
-    console.log(this.props.match.params);
-
-    this.props.editExercise(id, exerciseId, exerciseProps, history);
-  };
-
+    this.props.fetchExercise(id, exerciseId);
+  }
   render() {
-    const { errors } = this.props;
+    const { exercise } = this.props.workouts;
     return (
       <div>
-        <h1 className="title is-3">Edit your exercise</h1>
-        <form onSubmit={this.onSubmit}>
-          <InputField
-            label="Name"
-            name="name"
-            type="text"
-            value={this.state.name}
-            onChange={this.onChange}
-            errors={errors}
-          />
-          <Link
-            to={`/workouts/${this.props.match.params.id}`}
-            className="button is-danger is-large"
-            style={{ marginTop: "20px" }}
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            className="button is-primary is-large"
-            style={{ marginTop: "20px" }}
-          >
-            Submit
-          </button>
-        </form>
+        <h1 className="title is-3">Edit an exercise</h1>
+        <Formik
+          initialValues={{ name: exercise.name }}
+          validate={values => {
+            let errors = {};
+            if (!values.name) {
+              errors.name = "Name is required";
+            } else if (values.name.length < 2) {
+              errors.name = "Name must be more than 2 characters long!";
+            }
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            const { id, exerciseId } = this.props.match.params;
+            const { history } = this.props;
+            const exerciseProps = { ...values };
+            setSubmitting(false);
+            this.props.editExercise(id, exerciseId, exerciseProps, history);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <label className="label">Name:</label>
+              <Field type="text" name="name" className="input" />
+              <ErrorMessage
+                className="help is-danger"
+                name="name"
+                component="div"
+                style={{ fontSize: "24px" }}
+              />
+
+              <button
+                type="submit"
+                className="button is-primary is-large"
+                style={{ marginTop: "20px" }}
+                disabled={isSubmitting}
+                onSubmit={this.onSubmit}
+              >
+                Submit
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ errors, workouts }) => {
-  return { errors, workouts };
+const mapStateToProps = ({ workouts }) => {
+  return { workouts };
 };
 
 export default connect(
   mapStateToProps,
-  { editExercise }
-)(withRouter(ExerciseEdit));
+  { editExercise, fetchExercise }
+)(withRouter(ExerciseNew));

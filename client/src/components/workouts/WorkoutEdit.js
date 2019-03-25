@@ -1,80 +1,83 @@
-import _ from "lodash";
 import React from "react";
-import InputField from "components/inputs/InputField";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchWorkout, editWorkout } from "actions/workoutActions";
+import { editWorkout } from "actions/workoutActions";
 
 class WorkoutEdit extends React.Component {
-  state = { name: this.props.workouts.workout.name || "", errors: {} };
-
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.errors) {
-      return { errors: nextProps.errors };
-    }
-
-    return null;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.errors !== this.props.errors) {
-      this.setState({ errors: this.props.errors });
-    }
-  }
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { history } = this.props;
-    const { id } = this.props.match.params;
-    const workoutProps = { ...this.state };
-
-    this.props.editWorkout(id, workoutProps, history);
-  };
+  // state = { name: "", errors: {} };
+  //
+  // onChange = e => {
+  //   this.setState({ [e.target.name]: e.target.value });
+  // };
+  //
+  // onSubmit = e => {
+  //   e.preventDefault();
+  //
+  //   const { history } = this.props;
+  //   const { id } = this.props.match.params;
+  //   const workoutProps = { ...this.state };
+  //
+  //   this.props.editWorkout(id, workoutProps, history);
+  // };
 
   render() {
-    const { errors } = this.props;
+    const { history } = this.props;
+    const { workout } = this.props.workouts;
+    const { id } = this.props.match.params;
     return (
       <div>
-        <h1 className="title is-3">Edit your workout</h1>
-        <form onSubmit={this.onSubmit}>
-          <InputField
-            label="Name"
-            name="name"
-            type="text"
-            value={this.state.name}
-            onChange={this.onChange}
-            errors={errors}
-          />
-          <Link
-            to="/workouts"
-            className="button is-danger is-large"
-            style={{ marginTop: "20px" }}
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            className="button is-primary is-large"
-            style={{ marginTop: "20px" }}
-          >
-            Submit
-          </button>
-        </form>
+        <h1 className="title is-3">Edit a workout</h1>
+        <Formik
+          initialValues={{ name: workout.name }}
+          validate={values => {
+            let errors = {};
+            if (!values.name) {
+              errors.name = "Name is required";
+            } else if (values.name.length < 2) {
+              errors.name = "Name must be more than 2 characters long!";
+            }
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            const workoutProps = { ...values };
+            setSubmitting(false);
+            this.props.editWorkout(id, workoutProps, history);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <label className="label">Name:</label>
+              <Field type="text" name="name" className="input" />
+              <ErrorMessage
+                className="help is-danger"
+                name="name"
+                component="div"
+                style={{ fontSize: "24px" }}
+              />
+
+              <button
+                type="submit"
+                className="button is-primary is-large"
+                style={{ marginTop: "20px" }}
+                disabled={isSubmitting}
+                onSubmit={this.onSubmit}
+              >
+                Submit
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ errors, workouts }) => {
-  return { errors, workouts };
+const mapStateToProps = ({ workouts }) => {
+  return { workouts };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchWorkout, editWorkout }
+  { editWorkout }
 )(withRouter(WorkoutEdit));
