@@ -7,7 +7,7 @@ const Joi = require("joi");
 const User = require("../models/User");
 const Workout = require("../models/Workout");
 const ExerciseSchema = require("../models/Exercise");
-const workoutValidationSchema = require("../validation/workoutValidation");
+const validateWorkout = require("../validation/workoutValidation");
 const errors = require("../validation/errors");
 
 // @route   GET api/workout/test
@@ -22,8 +22,7 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    User.findOne({ user: req.user.id })
-      .then(() => Workout.find({ user: req.user.id }))
+    Workout.find({ user: req.user.id })
       .then(workouts => res.json(workouts))
       .catch(next);
   }
@@ -35,7 +34,7 @@ router.get(
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
+  async (req, res, next) => {
     Workout.findById(req.params.id)
       .then(workout => res.json(workout))
       .catch(next);
@@ -49,18 +48,15 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
+    const { error } = validateWorkout(req.body);
+
+    if (error) return res.status(400).send(error.details.map(d => d.message));
+
     const workoutProps = { ...req.body, user: req.user.id };
 
-    workoutValidationSchema
-      .validate(workoutProps)
-      .then(validatedWorkout => {
-        Workout.create(workoutProps)
-          .then(workout => res.json(workout))
-          .catch(next);
-      })
-      .catch(validationError =>
-        res.send(validationError.details.map(d => d.message))
-      );
+    Workout.create(workoutProps)
+      .then(workout => res.json(workout))
+      .catch(next);
   }
 );
 
@@ -72,8 +68,7 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
     Workout.findOneAndRemove({ _id: req.params.id })
-      .then(() => Workout.find({ user: req.user.id }))
-      .then(workouts => res.json(workouts))
+      .then(workout => res.json(workout))
       .catch(next);
   }
 );
@@ -82,11 +77,18 @@ router.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    const workoutId = req.params.id;
+    const { error } = validateWorkout(req.body);
+
+    if (error) return res.status(400).send(error.details.map(d => d.message));
+
     const workoutProps = req.body;
 
-    Workout.findByIdAndUpdate({ _id: workoutId }, workoutProps)
-      .then(() => Workout.findById(workoutId))
+    Workout.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: workoutProps },
+      { new: true }
+    )
+      // .then(() => Workout.findById(workoutId))
       .then(workout => res.send(workout))
       .catch(next);
   }

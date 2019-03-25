@@ -1,11 +1,16 @@
+import _ from "lodash";
 import React from "react";
 import InputField from "components/inputs/InputField";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { createWorkout } from "actions/workoutActions";
+import { fetchWorkout, editWorkout } from "actions/workoutActions";
 
-class WorkoutNew extends React.Component {
-  state = { name: "", errors: null };
+class WorkoutEdit extends React.Component {
+  state = { name: "", errors: {} };
+
+  componentDidMount() {
+    this.props.fetchWorkout(this.props.match.params.id);
+  }
 
   static getDerivedStateFromProps(nextProps) {
     if (nextProps.errors) {
@@ -16,19 +21,33 @@ class WorkoutNew extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { workout } = this.props.workouts;
+    console.log("Workout", workout);
+
     if (prevProps.errors !== this.props.errors) {
       this.setState({ errors: this.props.errors });
+    }
+
+    if (prevProps.workout !== this.props.workout) {
+      this.setState({ name: this.state.name });
     }
   }
 
   onChange = e => {
+    const workoutProps = { ...this.state };
+    console.log("Props", workoutProps);
     this.setState({ [e.target.name]: e.target.value });
   };
 
   onSubmit = e => {
     e.preventDefault();
     const workoutProps = { ...this.state };
-    this.props.createWorkout(workoutProps, this.props.history);
+
+    this.props.editWorkout(
+      this.props.match.params.id,
+      workoutProps,
+      this.props.history
+    );
   };
 
   render() {
@@ -46,6 +65,13 @@ class WorkoutNew extends React.Component {
             onChange={this.onChange}
             errors={errors}
           />
+          <Link
+            to="/workouts"
+            className="button is-danger is-large"
+            style={{ marginTop: "20px" }}
+          >
+            Cancel
+          </Link>
           <button
             type="submit"
             className="button is-primary is-large"
@@ -59,11 +85,11 @@ class WorkoutNew extends React.Component {
   }
 }
 
-const mapStateToProps = ({ errors }) => {
-  return { errors };
+const mapStateToProps = ({ errors, workouts }) => {
+  return { errors, workouts };
 };
 
 export default connect(
   mapStateToProps,
-  { createWorkout }
-)(withRouter(WorkoutNew));
+  { fetchWorkout, editWorkout }
+)(withRouter(WorkoutEdit));

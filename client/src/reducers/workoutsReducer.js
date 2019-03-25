@@ -2,6 +2,7 @@ import {
   FETCH_WORKOUTS,
   FETCH_WORKOUT,
   DELETE_WORKOUT,
+  ADD_WORKOUT,
   GET_ERRORS,
   IS_LOADING
 } from "actions/types";
@@ -18,6 +19,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: true
+      };
+    }
+
+    case ADD_WORKOUT: {
+      return {
+        ...state,
+        workoutList: [action.payload, ...state.workoutList],
+        loading: false
       };
     }
 

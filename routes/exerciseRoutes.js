@@ -15,9 +15,10 @@ router.post(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
+    console.log(req.body);
     Workout.findOne({ _id: req.params.id }).then(workout => {
       const exerciseProps = req.body;
-
+      console.log(exerciseProps);
       Joi.validate(exerciseProps, exerciseValidationSchema);
 
       workout.exercises.push(exerciseProps);
@@ -40,8 +41,6 @@ router.delete(
       const exercise = workout.exercises.find(
         exercise => exercise._id.toString() === req.params.exercise_id
       );
-
-      // ExerciseSchema.findByIdAndRemove({ _id: req.params.exercise_id });
 
       exercise.remove();
       workout

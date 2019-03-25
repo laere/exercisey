@@ -1,8 +1,14 @@
 const Joi = require("joi");
 
-const setValidationSchema = Joi.object().keys({
-  repCount: Joi.string().required(),
-  weight: Joi.string().required()
-});
+function validateSet(set) {
+  const schema = Joi.object()
+    .keys({
+      repCount: Joi.string().required(),
+      weight: Joi.string().required()
+    })
+    .unknown();
 
-module.exports = setValidationSchema;
+  return Joi.validate(set, schema);
+}
+
+module.exports = validateSet;

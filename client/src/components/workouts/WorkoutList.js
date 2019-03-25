@@ -22,7 +22,6 @@ class WorkoutList extends React.Component {
   }
 
   render() {
-    console.log(this.props.workoutList);
     return (
       <div>
         <h1 className="title is-3">Your current workouts:</h1>

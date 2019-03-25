@@ -1,11 +1,12 @@
 import {
-  ADD_WORKOUT,
-  DELETE_WORKOUT,
-  EDIT_WORKOUT,
   GET_ERRORS,
+  FETCH_WORKOUT,
   FETCH_WORKOUTS,
-  IS_LOADING
+  ADD_WORKOUT,
+  IS_LOADING,
+  CLEAR_ERRORS
 } from "actions/types";
+import { SubmissionError } from "redux-form";
 import axios from "axios";
 
 export const isLoading = () => {
@@ -14,13 +15,20 @@ export const isLoading = () => {
   };
 };
 
-export const createWorkout = (formValues, history) => dispatch => {
-  axios
-    .post("/api/workouts", formValues)
-    .then(res => dispatch({ type: ADD_WORKOUT, payload: res.data }))
-    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
+};
 
-  history.push("/workouts");
+export const createWorkout = (workoutProps, history) => dispatch => {
+  axios
+    .post("/api/workouts", workoutProps)
+    .then(res => {
+      history.push("/workouts");
+      // Push back to workouts page
+    })
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
 export const fetchWorkouts = () => dispatch => {
@@ -28,5 +36,32 @@ export const fetchWorkouts = () => dispatch => {
   axios
     .get("/api/workouts")
     .then(res => dispatch({ type: FETCH_WORKOUTS, payload: res.data }))
-    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+    .catch(err => console.log(err));
+};
+
+export const fetchWorkout = id => dispatch => {
+  dispatch(isLoading());
+
+  axios
+    .get(`/api/workouts/${id}`)
+    .then(res => dispatch({ type: FETCH_WORKOUT, payload: res.data }))
+    .catch(err => console.log(err));
+};
+
+export const deleteWorkout = (workoutId, history) => dispatch => {
+  axios
+    .delete(`/api/workouts/${workoutId}`)
+    .then(res => dispatch({ type: FETCH_WORKOUT, payload: res.data }))
+    .catch(err => console.log(err));
+
+  history.push("/workouts");
+
+  // history.push("/workouts");
+};
+
+export const editWorkout = (workoutId, workoutProps, history) => dispatch => {
+  axios
+    .put(`/api/workouts/${workoutId}`, workoutProps)
+    .then(res => history.push(`/workouts/${workoutId}`))
+    .catch(err => console.log(err));
 };
