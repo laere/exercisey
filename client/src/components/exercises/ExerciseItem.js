@@ -19,9 +19,13 @@ class ExerciseItem extends React.Component {
             <a className="button is-primary" style={{ marginRight: "10px" }}>
               Add Set
             </a>
-            <a className="button is-link" style={{ marginRight: "10px" }}>
+            <Link
+              to={`/workouts/${workout._id}/exercises/edit/${_id}`}
+              className="button is-link"
+              style={{ marginRight: "10px" }}
+            >
               Edit
-            </a>
+            </Link>
             <Link
               to={`/workouts/${workout._id}/exercises/delete/${_id}`}
               className="button is-danger"

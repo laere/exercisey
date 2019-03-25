@@ -17,7 +17,18 @@ export const createExercise = (formValues, history, workoutId) => dispatch => {
 export const deleteExercise = (workoutId, exerciseId, history) => dispatch => {
   axios
     .delete(`/api/workouts/${workoutId}/${exerciseId}`)
-    .then(res => dispatch({ type: FETCH_EXERCISES, payload: res.data }))
+    .then(res => history.push(`/workouts/${workoutId}`))
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
-  history.push(`/workouts/${workoutId}`);
+};
+
+export const editExercise = (
+  workoutId,
+  exerciseId,
+  exerciseProps,
+  history
+) => dispatch => {
+  axios
+    .put(`/api/workouts/${workoutId}/${exerciseId}`, exerciseProps)
+    .then(res => history.push(`/workouts/${workoutId}`))
+    .catch(err => console.log(err));
 };

@@ -3,10 +3,10 @@ import React from "react";
 import InputField from "components/inputs/InputField";
 import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchWorkout, editWorkout } from "actions/workoutActions";
+import { editExercise } from "actions/exerciseActions";
 
-class WorkoutEdit extends React.Component {
-  state = { name: this.props.workouts.workout.name || "", errors: {} };
+class ExerciseEdit extends React.Component {
+  state = { name: "", errors: {} };
 
   static getDerivedStateFromProps(nextProps) {
     if (nextProps.errors) {
@@ -30,17 +30,19 @@ class WorkoutEdit extends React.Component {
     e.preventDefault();
 
     const { history } = this.props;
-    const { id } = this.props.match.params;
-    const workoutProps = { ...this.state };
+    const { id, exerciseId } = this.props.match.params;
+    const exerciseProps = { ...this.state };
 
-    this.props.editWorkout(id, workoutProps, history);
+    console.log(this.props.match.params);
+
+    this.props.editExercise(id, exerciseId, exerciseProps, history);
   };
 
   render() {
     const { errors } = this.props;
     return (
       <div>
-        <h1 className="title is-3">Edit your workout</h1>
+        <h1 className="title is-3">Edit your exercise</h1>
         <form onSubmit={this.onSubmit}>
           <InputField
             label="Name"
@@ -51,7 +53,7 @@ class WorkoutEdit extends React.Component {
             errors={errors}
           />
           <Link
-            to="/workouts"
+            to={`/workouts/${this.props.match.params.id}`}
             className="button is-danger is-large"
             style={{ marginTop: "20px" }}
           >
@@ -76,5 +78,5 @@ const mapStateToProps = ({ errors, workouts }) => {
 
 export default connect(
   mapStateToProps,
-  { fetchWorkout, editWorkout }
-)(withRouter(WorkoutEdit));
+  { editExercise }
+)(withRouter(ExerciseEdit));

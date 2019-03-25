@@ -59,7 +59,16 @@ router.put(
     const workoutId = req.params.id;
     const exerciseId = req.params.exercise_id;
 
-    ExerciseSchema.findByIdAndUpdate({ _id: exerciseId }, exerciseProps);
+    Workout.findOne({ _id: workoutId }).then(workout => {
+      const exercise = workout.exercises.id(exerciseId);
+
+      exercise.set(exerciseProps);
+
+      workout
+        .save()
+        .then(workout => res.json(workout))
+        .catch(next);
+    });
   }
 );
 
