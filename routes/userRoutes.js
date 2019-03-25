@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const Joi = require("joi");
 const User = require("../models/User");
-const registerValidationSchema = require("../validation/registerValidation");
+const validateRegistery = require("../validation/registerValidation");
 const errors = require("../validation/errors");
 
 // @route   GET api/users/test
@@ -23,6 +23,10 @@ router.post("/register", (req, res, next) => {
   const userProps = req.body;
   const { email } = userProps;
 
+  const { error } = validateRegistery(userProps);
+
+  if (error) return res.status(400).json(error.details.map(d => d.message));
+
   User.findOne({ email })
     .then(user => {
       if (user) {
@@ -36,19 +40,14 @@ router.post("/register", (req, res, next) => {
 
         const newUser = new User({ ...userProps, avatar });
 
-        registerValidationSchema
-          .validate(newUser, { abortEarly: false })
-          .then(validatedUser => {
-            bcrypt.hash(validatedUser.password, 10, (err, hash) => {
-              if (err) next(err);
-              validatedUser.password = hash;
-              validatedUser
-                .save()
-                .then(user => res.json(user))
-                .catch(next);
-            });
-          })
-          .catch(validationError => res.json(validationError));
+        bcrypt.hash(newUser.password, 10, (err, hash) => {
+          if (err) next(err);
+          newUser.password = hash;
+          newUser
+            .save()
+            .then(user => res.json(user))
+            .catch(next);
+        });
       }
     })
     .catch(next);

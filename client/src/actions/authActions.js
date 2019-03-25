@@ -8,7 +8,7 @@ export const registerUser = (formValues, history) => async dispatch => {
   axios
     .post("/api/users/register", formValues)
     .then(res => history.push("/login"))
-    .catch(err => console.log(err));
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
 export const setCurrentUser = decodedToken => {
