@@ -2,11 +2,9 @@ import {
   GET_ERRORS,
   FETCH_WORKOUT,
   FETCH_WORKOUTS,
-  ADD_WORKOUT,
   IS_LOADING,
   CLEAR_ERRORS
 } from "actions/types";
-import { SubmissionError } from "redux-form";
 import axios from "axios";
 
 export const isLoading = () => {

@@ -8,6 +8,8 @@ const Workout = require("../models/Workout");
 const ExerciseSchema = require("../models/Exercise");
 const exerciseValidationSchema = require("../validation/exerciseValidation");
 
+//Exercise ROUTES//
+
 router.get(
   "/:id/:exerciseId",
   passport.authenticate("jwt", { session: false }),
@@ -76,6 +78,29 @@ router.put(
 
       exercise.set(exerciseProps);
 
+      workout
+        .save()
+        .then(workout => res.json(workout))
+        .catch(next);
+    });
+  }
+);
+
+// SET ROUTES
+router.post(
+  "/:id/:exerciseId",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Workout.findOne({ _id: req.params.id }).then(workout => {
+      const setProps = req.body;
+      console.log(req.body);
+      // Find the exercise we want to add sets to
+      const exercise = workout.exercises.id(req.params.exerciseId);
+      console.log(exercise);
+      // Push new set to exercise
+      exercise.sets.push(setProps);
+
+      // save workout and return
       workout
         .save()
         .then(workout => res.json(workout))

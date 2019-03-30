@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SetSchema = new Schema({
-  repCount: {
-    type: Number,
-    default: 0
+  repcount: {
+    type: String,
+    default: "0"
   },
   weight: {
-    type: Number
+    type: String,
+    default: "Bodyweight"
   }
 });
 

@@ -13,6 +13,7 @@ import WorkoutEdit from "components/workouts/WorkoutEdit";
 import ExerciseNew from "components/exercises/ExerciseNew";
 import ExerciseDelete from "components/exercises/ExerciseDelete";
 import ExerciseEdit from "components/exercises/ExerciseEdit";
+import SetNew from "components/sets/SetNew";
 
 class App extends React.Component {
   render() {
@@ -52,6 +53,11 @@ class App extends React.Component {
               exact
               path="/workouts/:id/exercises/edit/:exerciseId"
               component={ExerciseEdit}
+            />
+            <PrivateRoute
+              exact
+              path="/workouts/:id/exercises/:exerciseId/sets/new"
+              component={SetNew}
             />
           </Switch>
         </div>

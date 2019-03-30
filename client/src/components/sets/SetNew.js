@@ -2,29 +2,39 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { createWorkout } from "actions/workoutActions";
+import { createSet } from "actions/setActions";
 import singleFormValidation from "components/validation/singleFormValidation";
 
-class WorkoutNew extends React.Component {
+class SetNew extends React.Component {
   render() {
     return (
       <div>
         <h1 className="title is-3">Create a workout</h1>
         <Formik
-          initialValues={{ name: "" }}
-          validate={values => singleFormValidation(values)}
+          initialValues={{ repcount: "", weight: "Bodyweight" }}
           onSubmit={(values, { setSubmitting }) => {
+            const { id, exerciseId } = this.props.match.params;
+            console.log(id);
+            console.log(exerciseId);
             setSubmitting(false);
-            this.props.createWorkout(values, this.props.history);
+            this.props.createSet(id, exerciseId, values, this.props.history);
           }}
         >
           {({ isSubmitting }) => (
             <Form>
-              <label className="label">Name:</label>
-              <Field type="text" name="name" className="input" />
+              <label className="label">Rep Count:</label>
+              <Field type="number" name="repcount" className="input" />
               <ErrorMessage
                 className="help is-danger"
-                name="name"
+                name="repcount"
+                component="div"
+                style={{ fontSize: "24px" }}
+              />
+              <label className="label">Weight</label>
+              <Field type="text" name="weight" className="input" />
+              <ErrorMessage
+                className="help is-danger"
+                name="weight"
                 component="div"
                 style={{ fontSize: "24px" }}
               />
@@ -52,5 +62,5 @@ const mapStateToProps = ({ workouts }) => {
 
 export default connect(
   mapStateToProps,
-  { createWorkout }
-)(withRouter(WorkoutNew));
+  { createSet }
+)(withRouter(SetNew));
