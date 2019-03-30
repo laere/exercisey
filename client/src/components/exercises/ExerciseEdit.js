@@ -9,8 +9,10 @@ class ExerciseNew extends React.Component {
     const { id, exerciseId } = this.props.match.params;
     this.props.fetchExercise(id, exerciseId);
   }
+
   render() {
     const { exercise } = this.props.workouts;
+    console.log("EXERCISE", exercise);
     return (
       <div>
         <h1 className="title is-3">Edit an exercise</h1>
@@ -31,6 +33,7 @@ class ExerciseNew extends React.Component {
             const exerciseProps = { ...values };
             setSubmitting(false);
             this.props.editExercise(id, exerciseId, exerciseProps, history);
+            this.props.fetchExercise(id, exerciseId);
           }}
         >
           {({ isSubmitting }) => (

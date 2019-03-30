@@ -5,24 +5,7 @@ import { connect } from "react-redux";
 import { editWorkout } from "actions/workoutActions";
 
 class WorkoutEdit extends React.Component {
-  // state = { name: "", errors: {} };
-  //
-  // onChange = e => {
-  //   this.setState({ [e.target.name]: e.target.value });
-  // };
-  //
-  // onSubmit = e => {
-  //   e.preventDefault();
-  //
-  //   const { history } = this.props;
-  //   const { id } = this.props.match.params;
-  //   const workoutProps = { ...this.state };
-  //
-  //   this.props.editWorkout(id, workoutProps, history);
-  // };
-
   render() {
-    const { history } = this.props;
     const { workout } = this.props.workouts;
     const { id } = this.props.match.params;
     return (
@@ -42,7 +25,7 @@ class WorkoutEdit extends React.Component {
           onSubmit={(values, { setSubmitting }) => {
             const workoutProps = { ...values };
             setSubmitting(false);
-            this.props.editWorkout(id, workoutProps, history);
+            this.props.editWorkout(id, workoutProps, this.props.history);
           }}
         >
           {({ isSubmitting }) => (

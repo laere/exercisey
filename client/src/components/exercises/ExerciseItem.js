@@ -2,43 +2,49 @@ import React from "react";
 // import Moment from "react-moment";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import SetList from "components/sets/SetList";
 
 class ExerciseItem extends React.Component {
   render() {
-    const { name, _id } = this.props.exercise;
+    const { name, _id, sets } = this.props.exercise;
     const { workout } = this.props.workouts;
     return (
-      <nav className="level" style={{ marginTop: "40px" }}>
+      <React.Fragment>
+        <nav className="level" style={{ marginTop: "40px" }}>
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="title">{name}</p>
+            </div>
+          </div>
+          <div className="level-item">
+            <div>
+              <Link
+                to={`/workouts/${workout._id}/exercises/${_id}/sets/new`}
+                className="button is-primary"
+                style={{ marginRight: "10px" }}
+              >
+                Add Set
+              </Link>
+              <Link
+                to={`/workouts/${workout._id}/exercises/edit/${_id}`}
+                className="button is-link"
+                style={{ marginRight: "10px" }}
+              >
+                Edit
+              </Link>
+              <Link
+                to={`/workouts/${workout._id}/exercises/delete/${_id}`}
+                className="button is-danger"
+              >
+                Delete
+              </Link>
+            </div>
+          </div>
+        </nav>
         <div className="level-item has-text-centered">
-          <div>
-            <p className="title">{name}</p>
-          </div>
+          <SetList sets={sets} />
         </div>
-        <div className="level-item">
-          <div>
-            <Link
-              to={`/workouts/${workout._id}/exercises/${_id}/sets/new`}
-              className="button is-primary"
-              style={{ marginRight: "10px" }}
-            >
-              Add Set
-            </Link>
-            <Link
-              to={`/workouts/${workout._id}/exercises/edit/${_id}`}
-              className="button is-link"
-              style={{ marginRight: "10px" }}
-            >
-              Edit
-            </Link>
-            <Link
-              to={`/workouts/${workout._id}/exercises/delete/${_id}`}
-              className="button is-danger"
-            >
-              Delete
-            </Link>
-          </div>
-        </div>
-      </nav>
+      </React.Fragment>
     );
   }
 }
