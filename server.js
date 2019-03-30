@@ -35,11 +35,14 @@ app.use(function(err, req, res, next) {
   res.status(err.statusCode).send(err.message);
 });
 
-// Serve static assets if in production
+// Only ran inside production (in heroku)
 if (process.env.NODE_ENV === "production") {
-  // Set static build
+  // Express will server up prod assets
+  // like main.js file or main.css file
   app.use(express.static("client/build"));
-
+  // Express will serve up the index.html file
+  // if it does not recognize the route
+  const path = require("path");
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });

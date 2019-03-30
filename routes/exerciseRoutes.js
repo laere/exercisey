@@ -114,12 +114,14 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
     Workout.findOne({ _id: req.params.id }).then(workout => {
+      // Find exercise
       const exercise = workout.exercises.id(req.params.exerciseId);
+      // Find set within exercises array
       const set = exercise.sets.id(req.params.setId);
-      console.log("SET", set);
-
+      // Remove set
       set.remove();
 
+      // Save and send back workout
       workout
         .save()
         .then(workout => res.json(workout))
