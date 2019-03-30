@@ -11,30 +11,30 @@ class ExerciseItem extends React.Component {
     return (
       <React.Fragment>
         <nav className="level" style={{ marginTop: "40px" }}>
-          <div className="level-item has-text-centered">
+          <div>
             <div>
               <p className="title">{name}</p>
             </div>
           </div>
-          <div className="level-item">
+          <div>
             <div>
               <Link
                 to={`/workouts/${workout._id}/exercises/${_id}/sets/new`}
-                className="button is-primary"
+                className="button is-primary is-small is-outlined"
                 style={{ marginRight: "10px" }}
               >
                 Add Set
               </Link>
               <Link
                 to={`/workouts/${workout._id}/exercises/edit/${_id}`}
-                className="button is-link"
+                className="button is-link is-small is-outlined"
                 style={{ marginRight: "10px" }}
               >
                 Edit
               </Link>
               <Link
                 to={`/workouts/${workout._id}/exercises/delete/${_id}`}
-                className="button is-danger"
+                className="button is-danger is-small is-outlined"
               >
                 Delete
               </Link>

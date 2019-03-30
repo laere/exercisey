@@ -9,7 +9,7 @@ class SetNew extends React.Component {
   render() {
     return (
       <div>
-        <h1 className="title is-3">Create a workout</h1>
+        <h1 className="title is-3">Create a set</h1>
         <Formik
           initialValues={{ repcount: 0, weight: "Bodyweight" }}
           onSubmit={(values, { setSubmitting }) => {

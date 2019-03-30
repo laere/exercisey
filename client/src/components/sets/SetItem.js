@@ -18,7 +18,7 @@ class SetItem extends React.Component {
         <td>
           <Link
             to={"/workouts"}
-            className="button is-link"
+            className="button  is-small is-outlined"
             style={{ marginRight: "10px" }}
           >
             Edit
@@ -27,7 +27,7 @@ class SetItem extends React.Component {
             to={`/workouts/${workout._id}/exercises/${
               this.props.exerciseId
             }/sets/delete/${this.props.set._id}`}
-            className="button is-danger"
+            className="button is-small is-outlined"
           >
             Delete
           </Link>
