@@ -109,4 +109,23 @@ router.post(
   }
 );
 
+router.delete(
+  "/:id/:exerciseId/:setId",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Workout.findOne({ _id: req.params.id }).then(workout => {
+      const exercise = workout.exercises.id(req.params.exerciseId);
+      const set = exercise.sets.id(req.params.setId);
+      console.log("SET", set);
+
+      set.remove();
+
+      workout
+        .save()
+        .then(workout => res.json(workout))
+        .catch(next);
+    });
+  }
+);
+
 module.exports = router;

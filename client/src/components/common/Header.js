@@ -34,7 +34,7 @@ class Header extends React.Component {
             className="button is-fullwidth is-danger is-rounded is-outlined is-inverted"
             style={{ margin: "auto" }}
           >
-            New Exercise
+            New Workout
           </Link>,
           <Link
             to="/"

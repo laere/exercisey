@@ -11,7 +11,7 @@ class SetNew extends React.Component {
       <div>
         <h1 className="title is-3">Create a workout</h1>
         <Formik
-          initialValues={{ repcount: "", weight: "Bodyweight" }}
+          initialValues={{ repcount: 0, weight: "Bodyweight" }}
           onSubmit={(values, { setSubmitting }) => {
             const { id, exerciseId } = this.props.match.params;
             console.log(id);

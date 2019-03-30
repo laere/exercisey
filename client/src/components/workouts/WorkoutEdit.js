@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { editWorkout } from "actions/workoutActions";
+import singleFormValidation from "components/validation/singleFormValidation";
 
 class WorkoutEdit extends React.Component {
   render() {
@@ -12,26 +13,23 @@ class WorkoutEdit extends React.Component {
       <div>
         <h1 className="title is-3">Edit a workout</h1>
         <Formik
-          initialValues={{ name: workout.name }}
-          validate={values => {
-            let errors = {};
-            if (!values.name) {
-              errors.name = "Name is required";
-            } else if (values.name.length < 2) {
-              errors.name = "Name must be more than 2 characters long!";
-            }
-            return errors;
-          }}
+          initialValues={{ name: "" }}
+          validate={values => singleFormValidation(values)}
           onSubmit={(values, { setSubmitting }) => {
             const workoutProps = { ...values };
             setSubmitting(false);
             this.props.editWorkout(id, workoutProps, this.props.history);
           }}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, values }) => (
             <Form>
               <label className="label">Name:</label>
-              <Field type="text" name="name" className="input" />
+              <Field
+                type="text"
+                name="name"
+                className="input"
+                value={values.name}
+              />
               <ErrorMessage
                 className="help is-danger"
                 name="name"

@@ -2,7 +2,6 @@ import React from "react";
 import ExerciseItem from "components/exercises/ExerciseItem";
 
 const ExerciseList = props => {
-  console.log(props.workout);
   const { exercises } = props.workout;
 
   if (!exercises) {

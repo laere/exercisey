@@ -8,7 +8,8 @@ const WorkoutItem = ({ workout }) => {
       <header className="card-header">
         <p className="card-header-title">{workout.name}</p>
         <div className="card-header-icon">
-          Created on: <Moment format="MM/DD/YYYY">{workout.dateCreated}</Moment>
+          <span style={{ marginRight: "10px" }}>Created on:</span>{" "}
+          <Moment format="MM/DD/YYYY">{workout.dateCreated}</Moment>
         </div>
       </header>
       <footer className="card-footer">

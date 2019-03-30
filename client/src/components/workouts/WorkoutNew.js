@@ -18,10 +18,15 @@ class WorkoutNew extends React.Component {
             this.props.createWorkout(values, this.props.history);
           }}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, values }) => (
             <Form>
               <label className="label">Name:</label>
-              <Field type="text" name="name" className="input" />
+              <Field
+                type="text"
+                name="name"
+                className="input"
+                value={values.name}
+              />
               <ErrorMessage
                 className="help is-danger"
                 name="name"

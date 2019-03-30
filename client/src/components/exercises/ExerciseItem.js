@@ -42,7 +42,7 @@ class ExerciseItem extends React.Component {
           </div>
         </nav>
         <div className="level-item has-text-centered">
-          <SetList sets={sets} />
+          <SetList sets={sets} exerciseId={_id} />
         </div>
       </React.Fragment>
     );

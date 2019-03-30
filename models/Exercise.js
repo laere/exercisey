@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const SetSchema = new Schema({
   repcount: {
-    type: String,
-    default: "0"
+    type: Number,
+    default: 0
   },
   weight: {
     type: String,
