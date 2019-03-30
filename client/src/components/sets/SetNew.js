@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { createSet } from "actions/setActions";
@@ -7,15 +8,13 @@ import singleFormValidation from "components/validation/singleFormValidation";
 
 class SetNew extends React.Component {
   render() {
+    const { id, exerciseId } = this.props.match.params;
     return (
       <div>
         <h1 className="title is-3">Create a set</h1>
         <Formik
           initialValues={{ repcount: 0, weight: "Bodyweight" }}
           onSubmit={(values, { setSubmitting }) => {
-            const { id, exerciseId } = this.props.match.params;
-            console.log(id);
-            console.log(exerciseId);
             setSubmitting(false);
             this.props.createSet(id, exerciseId, values, this.props.history);
           }}
@@ -38,7 +37,13 @@ class SetNew extends React.Component {
                 component="div"
                 style={{ fontSize: "24px" }}
               />
-
+              <Link
+                to={`/workouts/${id}`}
+                className="button is-danger is-large"
+                style={{ marginTop: "20px" }}
+              >
+                Cancel
+              </Link>
               <button
                 type="submit"
                 className="button is-primary is-large"
@@ -56,11 +61,7 @@ class SetNew extends React.Component {
   }
 }
 
-const mapStateToProps = ({ workouts }) => {
-  return { workouts };
-};
-
 export default connect(
-  mapStateToProps,
+  null,
   { createSet }
 )(withRouter(SetNew));
