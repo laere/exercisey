@@ -3,12 +3,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
-const Joi = require("joi");
-const User = require("../models/User");
 const Workout = require("../models/Workout");
-const ExerciseSchema = require("../models/Exercise");
 const validateWorkout = require("../validation/workoutValidation");
-const errors = require("../validation/errors");
 
 // @route   GET api/workout/test
 // @desc    Tests workout route
@@ -23,6 +19,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
     Workout.find({ user: req.user.id })
+      .sort({ _id: -1 })
       .then(workouts => res.json(workouts))
       .catch(next);
   }
@@ -88,16 +85,9 @@ router.put(
       { $set: workoutProps },
       { new: true }
     )
-      // .then(() => Workout.findById(workoutId))
       .then(workout => res.send(workout))
       .catch(next);
   }
 );
-
-//// EXERCISES/////////////////////////////////////////////
-
-// @route   POST api/workout/:id
-// @desc    Add an exercise
-// @access  Public
 
 module.exports = router;

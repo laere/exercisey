@@ -3,9 +3,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
-const Joi = require("joi");
 const Workout = require("../models/Workout");
-const ExerciseSchema = require("../models/Exercise");
 const validateExercise = require("../validation/exerciseValidation");
 const validateSet = require("../validation/setValidation");
 

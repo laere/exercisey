@@ -6,7 +6,6 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
-const Joi = require("joi");
 const User = require("../models/User");
 const validateRegistery = require("../validation/registerValidation");
 const errors = require("../validation/errors");
