@@ -4,11 +4,6 @@ import { connect } from "react-redux";
 import { fetchExercise } from "actions/exerciseActions";
 
 class SetItem extends React.Component {
-  componentDidMount() {
-    const { workout } = this.props.workouts;
-    this.props.fetchExercise(workout._id, this.props.exerciseId);
-  }
-
   render() {
     const { workout } = this.props.workouts;
     return (
@@ -16,13 +11,6 @@ class SetItem extends React.Component {
         <td>{this.props.set.repcount}</td>
         <td>{this.props.set.weight}</td>
         <td>
-          <Link
-            to={"/workouts"}
-            className="button  is-small is-outlined"
-            style={{ marginRight: "10px" }}
-          >
-            Edit
-          </Link>
           <Link
             to={`/workouts/${workout._id}/exercises/${
               this.props.exerciseId

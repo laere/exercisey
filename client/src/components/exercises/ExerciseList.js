@@ -9,9 +9,6 @@ const ExerciseList = props => {
   }
 
   const exerciseList = props.workout.exercises.map(exercise => {
-    if (!exercise) {
-      return;
-    }
     return <ExerciseItem key={exercise._id} exercise={exercise} />;
   });
 

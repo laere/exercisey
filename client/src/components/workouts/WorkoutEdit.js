@@ -7,7 +7,6 @@ import singleFormValidation from "components/validation/singleFormValidation";
 
 class WorkoutEdit extends React.Component {
   render() {
-    const { workout } = this.props.workouts;
     const { id } = this.props.match.params;
     return (
       <div>
@@ -54,11 +53,7 @@ class WorkoutEdit extends React.Component {
   }
 }
 
-const mapStateToProps = ({ workouts }) => {
-  return { workouts };
-};
-
 export default connect(
-  mapStateToProps,
+  null,
   { editWorkout }
 )(withRouter(WorkoutEdit));

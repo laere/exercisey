@@ -26,7 +26,7 @@ class App extends React.Component {
             <Route exact path="/" component={LandingPage} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            // Private routes (When use is logged in)
+
             <PrivateRoute exact path="/workouts" component={WorkoutList} />
             <PrivateRoute exact path="/workouts/new" component={WorkoutNew} />
             <PrivateRoute exact path="/workouts/:id" component={WorkoutShow} />

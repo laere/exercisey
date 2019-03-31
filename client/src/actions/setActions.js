@@ -10,7 +10,7 @@ export const createSet = (
   axios
     .post(`/api/workouts/${workoutId}/${exerciseId}`, setProps)
     .then(res => history.push(`/workouts/${workoutId}`))
-    .catch(err => console.log(err));
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
 export const deleteSet = (

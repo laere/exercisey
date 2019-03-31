@@ -6,13 +6,9 @@ import { editExercise, fetchExercise } from "actions/exerciseActions";
 import singleFormValidation from "components/validation/singleFormValidation";
 
 class ExeciseEdit extends React.Component {
-  componentDidMount() {
-    const { id, exerciseId } = this.props.match.params;
-    this.props.fetchExercise(id, exerciseId);
-  }
-
   render() {
-    const { exercise } = this.props.workouts;
+    const { id, exerciseId } = this.props.match.params;
+    const { history } = this.props;
     return (
       <div>
         <h1 className="title is-3">Edit an exercise</h1>
@@ -20,8 +16,6 @@ class ExeciseEdit extends React.Component {
           initialValues={{ name: "" }}
           validate={values => singleFormValidation(values)}
           onSubmit={(values, { setSubmitting }) => {
-            const { id, exerciseId } = this.props.match.params;
-            const { history } = this.props;
             const exerciseProps = { ...values };
             setSubmitting(false);
             this.props.editExercise(id, exerciseId, exerciseProps, history);
@@ -60,11 +54,7 @@ class ExeciseEdit extends React.Component {
   }
 }
 
-const mapStateToProps = ({ workouts }) => {
-  return { workouts };
-};
-
 export default connect(
-  mapStateToProps,
+  null,
   { editExercise, fetchExercise }
 )(withRouter(ExeciseEdit));

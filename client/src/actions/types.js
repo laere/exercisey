@@ -11,3 +11,5 @@ export const FETCH_WORKOUT = "FETCH_WORKOUT";
 export const FETCH_EXERCISE = "FETCH_EXERCISE";
 export const FETCH_EXERCISES = "FETCH_EXERCISES";
 export const DELETE_EXERCISE = "DELETE_EXERCISE";
+
+export const FETCH_SET = "FETCH_SET";

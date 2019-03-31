@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { createSet } from "actions/setActions";
-import singleFormValidation from "components/validation/singleFormValidation";
+import setValidation from "components/validation/setValidation";
 
 class SetNew extends React.Component {
   render() {
@@ -14,6 +14,7 @@ class SetNew extends React.Component {
         <h1 className="title is-3">Create a set</h1>
         <Formik
           initialValues={{ repcount: 0, weight: "Bodyweight" }}
+          validate={values => setValidation(values)}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false);
             this.props.createSet(id, exerciseId, values, this.props.history);
