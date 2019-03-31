@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const SetSchema = new Schema({
   repcount: {
     type: Number,
-    default: 0
+    default: 0,
+    required: true
   },
   weight: {
     type: String,
@@ -14,7 +15,10 @@ const SetSchema = new Schema({
 
 const ExerciseSchema = new Schema({
   name: {
-    type: String
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 30
   },
   sets: [SetSchema],
   dateCreated: {

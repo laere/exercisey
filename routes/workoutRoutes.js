@@ -34,7 +34,7 @@ router.get(
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  async (req, res, next) => {
+  (req, res, next) => {
     Workout.findById(req.params.id)
       .then(workout => res.json(workout))
       .catch(next);

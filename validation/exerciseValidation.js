@@ -1,9 +1,15 @@
 const Joi = require("joi");
 
-const exerciseValidationSchema = Joi.object().keys({
-  name: Joi.string()
-    .required()
-    .min(2)
-});
+function validateExercise(workout) {
+  const schema = Joi.object()
+    .keys({
+      name: Joi.string()
+        .required()
+        .min(2)
+    })
+    .unknown();
 
-module.exports = exerciseValidationSchema;
+  return Joi.validate(workout, schema);
+}
+
+module.exports = validateExercise;

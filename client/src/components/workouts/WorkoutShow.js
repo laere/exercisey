@@ -31,10 +31,11 @@ class WorkoutShow extends React.Component {
           <header className="card-header">
             <p className="card-header-title">{workout.name}</p>
             <div className="card-header-icon">
-              Created on:{" "}
+              <span style={{ marginRight: "10px" }}>Created on:</span>{" "}
               <Moment format="MM/DD/YYYY">{workout.dateCreated}</Moment>
             </div>
           </header>
+
           <footer className="card-footer">
             <Link
               to={`/workouts/edit/${workout._id}`}

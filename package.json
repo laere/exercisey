@@ -12,7 +12,7 @@
     "server": "nodemon server.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "nodemon --exec mocha -R min --colors --watchAll",
+    "test": "jest --colors --watchAll",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "",
@@ -35,5 +35,8 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-jwt": "^4.0.0",
     "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "jest": "^24.5.0"
   }
 }

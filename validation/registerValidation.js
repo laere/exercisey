@@ -9,7 +9,6 @@ function validateRegistery(registration) {
         .required(),
       email: Joi.string()
         .min(2)
-        .regex(/^.+@.+\..+$/)
         .email()
         .required(),
       password: Joi.string()

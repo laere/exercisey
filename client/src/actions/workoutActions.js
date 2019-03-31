@@ -34,7 +34,7 @@ export const fetchWorkouts = () => dispatch => {
   axios
     .get("/api/workouts")
     .then(res => dispatch({ type: FETCH_WORKOUTS, payload: res.data }))
-    .catch(err => console.log(err));
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
 export const fetchWorkout = id => dispatch => {
@@ -43,14 +43,14 @@ export const fetchWorkout = id => dispatch => {
   axios
     .get(`/api/workouts/${id}`)
     .then(res => dispatch({ type: FETCH_WORKOUT, payload: res.data }))
-    .catch(err => console.log(err));
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
 export const deleteWorkout = (workoutId, history) => dispatch => {
   axios
     .delete(`/api/workouts/${workoutId}`)
     .then(res => dispatch({ type: FETCH_WORKOUT, payload: res.data }))
-    .catch(err => console.log(err));
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 
   history.push("/workouts");
 
@@ -61,5 +61,5 @@ export const editWorkout = (workoutId, workoutProps, history) => dispatch => {
   axios
     .put(`/api/workouts/${workoutId}`, workoutProps)
     .then(res => history.push(`/workouts/${workoutId}`))
-    .catch(err => console.log(err));
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
