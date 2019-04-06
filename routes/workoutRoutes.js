@@ -19,7 +19,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
     Workout.find({ user: req.user.id })
-      .sort({ _id: -1 })
+      .sort({ dateCreated: -1 })
       .then(workouts => res.json(workouts))
       .catch(next);
   }
