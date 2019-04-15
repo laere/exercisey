@@ -92,6 +92,26 @@ router.put(
 ////////////////////////////////////////////////////////////////////////////////////
 // SET ROUTES
 ////////////////////////////////////////////////////////////////////////////////////
+
+router.get(
+  "/:id/:exerciseId/:setId",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Workout.findOne({ _id: req.params.id })
+      .then(workout => {
+        console.log(workout);
+        const exercise = workout.exercises.id(req.params.exerciseId);
+
+        console.log(exercise);
+        const set = exercise.sets.id(req.params.setId);
+
+        console.log(set);
+        res.json(set);
+      })
+      .catch(next);
+  }
+);
+
 router.post(
   "/:id/:exerciseId",
   passport.authenticate("jwt", { session: false }),

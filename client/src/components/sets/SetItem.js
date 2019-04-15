@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { fetchWorkout } from "actions/workoutActions";
 import { fetchExercise } from "actions/exerciseActions";
+import { createSet } from "actions/setActions";
 
 class SetItem extends React.Component {
   render() {
@@ -19,6 +21,14 @@ class SetItem extends React.Component {
           >
             Delete
           </Link>
+          <Link
+            to={`/workouts/${workout._id}/exercises/${
+              this.props.exerciseId
+            }/sets/repeat/${this.props.set._id}`}
+            className="button is-small is-outlined"
+          >
+            Repeat
+          </Link>
         </td>
       </tr>
     );
@@ -31,5 +41,5 @@ const mapStateToProps = ({ workouts }) => {
 
 export default connect(
   mapStateToProps,
-  { fetchExercise }
-)(SetItem);
+  { fetchExercise, createSet, fetchWorkout }
+)(withRouter(SetItem));

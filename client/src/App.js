@@ -15,6 +15,7 @@ import ExerciseDelete from "components/exercises/ExerciseDelete";
 import ExerciseEdit from "components/exercises/ExerciseEdit";
 import SetNew from "components/sets/SetNew";
 import SetDelete from "components/sets/SetDelete";
+import SetRepeat from "components/sets/SetRepeat";
 
 class App extends React.Component {
   render() {
@@ -64,6 +65,11 @@ class App extends React.Component {
               exact
               path="/workouts/:id/exercises/:exerciseId/sets/delete/:setId"
               component={SetDelete}
+            />
+            <PrivateRoute
+              exact
+              path="/workouts/:id/exercises/:exerciseId/sets/repeat/:setId"
+              component={SetRepeat}
             />
           </Switch>
         </div>
